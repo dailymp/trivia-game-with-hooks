@@ -20,7 +20,7 @@ export const QuestionsContainerComponent = () => {
   }, []);
 
   return (
-    <table className="table">
+    <table style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <tbody>
         {questions.map((question, index) => (
           <QuestionBox key={index} question={question} />
