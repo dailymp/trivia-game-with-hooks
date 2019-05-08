@@ -1,6 +1,6 @@
 import * as React from "react";
 import { questionsApi } from "../api/questionsAPI";
-import { QuestionBox } from "./questionBox";
+import { QuestionsItem } from "./questionsItem";
 
 function useQuestions() {
   const [questions, setQuestions] = React.useState([]);
@@ -8,7 +8,6 @@ function useQuestions() {
   const loadQuestions = () => {
     questionsApi.getAllQuestions().then(questions => setQuestions(questions));
   };
-
   return {  questions,  loadQuestions };
 }
 
@@ -20,12 +19,7 @@ export const QuestionsContainerComponent = () => {
   }, []);
 
   return (
-    <table style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      <tbody>
-        {questions.map((question, index) => (
-          <QuestionBox key={index} question={question} />
-        ))}
-      </tbody>
-    </table>
+    // A new component is created in order to manage individual state component
+    <QuestionsItem questions = {questions} />
   );
 };

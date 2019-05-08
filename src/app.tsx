@@ -18,16 +18,19 @@ const styles = theme =>
       marginBottom: 60,
       fontSize: 20,
       fontWeight: 'bold',
-      fontFamily: 'Arial'      
+      fontFamily: 'Arial'
     },
     button: {
-marginBottom: 20,
+      marginBottom: 20,
     }
   });
+
 interface State {
   begin: boolean;
 }
+
 interface Props extends WithStyles<typeof styles> { }
+
 export class AppInner extends React.Component<Props, State> {
 
   /**
@@ -35,29 +38,29 @@ export class AppInner extends React.Component<Props, State> {
    */
   constructor(props: Props) {
     super(props);
-this.state = { begin: false }
+    this.state = { begin: false }
   }
 
   public render() {
     const { classes } = this.props;
+    const { begin } = this.state;
 
     return (
       <>
         <Card className={classes.card}>
-          <CardHeader className= {classes.cardHeader}  title="Welcome to the trivia challenge" />
+          <CardHeader className={classes.cardHeader} title="Welcome to the trivia challenge" />
           <CardContent>
-            <div   className={classes.cardHeader} >
+            <div className={classes.cardHeader} >
               <div className={classes.cardHeader}>You will be presented with 10 true or false questions</div>
               <div className={classes.cardHeader}>Can you score 100%?</div>
 
-              <div  className={classes.card}>
-              <Button onClick= { () => this.setState({ begin: true})} 
-               variant="contained" color="secondary" className={classes.button}>Begin</Button>
-              </div>               
-              
+              <div className={classes.card}>
+                <Button onClick={() => this.setState({ begin: true })}
+                  variant="contained" color="secondary" className={classes.button}>Begin</Button>
+              </div>
             </div>
 
-            { this.state.begin && <QuestionsContainerComponent /> }
+            {begin && <QuestionsContainerComponent />}
           </CardContent>
         </Card>
       </>
