@@ -19,7 +19,8 @@ export const QuestionsContainerComponent = () => {
   }, []);
 
   return (
-    // A new component is created in order to manage individual state component
+    // As a first approach, a new component is created in order to manage the state in the component without having to use Hooks
+    // The final version would be implemented using hooks instead
     <QuestionsItem questions = {questions} />
   );
 };
