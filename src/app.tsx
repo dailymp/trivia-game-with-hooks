@@ -26,7 +26,7 @@ const styles = theme =>
   });
 
 interface State {
-  begin: boolean;
+  begin: boolean
 }
 
 interface Props extends WithStyles<typeof styles> { }
@@ -48,17 +48,19 @@ export class AppInner extends React.Component<Props, State> {
     return (
       <>
         <Card className={classes.card}>
-          <CardHeader className={classes.cardHeader} title="Welcome to the trivia challenge" />
+          {!begin && <CardHeader className={classes.cardHeader} title="Welcome to the trivia challenge" /> }
+          
           <CardContent>
-            <div className={classes.cardHeader} >
-              <div className={classes.cardHeader}>You will be presented with 10 true or false questions</div>
-              <div className={classes.cardHeader}>Can you score 100%?</div>
-
-              <div className={classes.card}>
-                <Button onClick={() => this.setState({ begin: true })}
-                  variant="contained" color="secondary" className={classes.button}>Begin</Button>
+            {!begin && 
+              <div className={classes.cardHeader} >
+                <div className={classes.cardHeader}>You will be presented with 10 true or false questions</div>
+                <div className={classes.cardHeader}>Can you score 100%?</div>
+                <div className={classes.card}>
+                  <Button onClick={() => this.setState({ begin: true })}
+                    variant="contained" color="secondary" className={classes.button}>Begin</Button>
+                </div>
               </div>
-            </div>
+            }
 
             {begin && <QuestionsContainerComponent />}
           </CardContent>

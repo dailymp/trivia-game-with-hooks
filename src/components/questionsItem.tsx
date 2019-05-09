@@ -1,17 +1,31 @@
 import * as React from 'react';
 import { QuestionBox } from "./questionBox";
 import { Questions } from "../model/questionsResults";
-import { Button } from "@material-ui/core";
+import { WithStyles, withStyles, createStyles, Button } from "@material-ui/core";
+
+// styles is an object created with createStyles.
+const styles = theme =>
+  createStyles({
+    gameContainer: {
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+    },
+    questionCounter: {
+      marginBottom: '50px' 
+    }
+  });
+
 
 interface State {
   questionIndex: number
 }
 
-interface Props {
+interface Props extends WithStyles <typeof styles> {
   questions: Questions[];
 }
 
-export class QuestionsItem extends React.Component<Props, State> {
+export class QuestionsItemInner extends React.Component<Props, State> {
 
   constructor (props) {
     super(props);
@@ -19,21 +33,25 @@ export class QuestionsItem extends React.Component<Props, State> {
   }
 
   public render() {
-    const { questions } = this.props;
+    const { questions, classes } = this.props;
     const { questionIndex } = this.state;
     
     return (
-      <div>
+      <div className={classes.gameContainer}>
         {/* because questions array could be empty */}
         {questions.length > 0 && <QuestionBox question={ questions[questionIndex] } /> }
-        <div>
+        <div className={classes.questionCounter}>
           {`${questionIndex + 1} of 10`}
         </div>
         <div>
-          <Button onClick={() => this.setState({ questionIndex: questionIndex + 1 })}
+          {questionIndex < (questions.length - 1) && 
+            <Button onClick={() => this.setState({ questionIndex: questionIndex + 1 })}
             variant="contained" color="secondary">Next</Button>
+          }
         </div>
       </div>
     )
   }
 }
+
+export const QuestionsItem = withStyles(styles)(QuestionsItemInner);
