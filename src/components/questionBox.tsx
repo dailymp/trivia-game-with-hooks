@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Questions } from '../model/questionsResults';
-
-export const QuestionBox = (props: { question: Questions }) =>
+interface QuestionBoxProps {
+  question: Questions,
+  answerQuestion: (index: number, answer: boolean) => void
+}
+export const QuestionBox = (props: QuestionBoxProps) =>
   <tr>
     <td>
       <span>{props.question.category}</span>
