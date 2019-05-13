@@ -26,7 +26,8 @@ marginBottom: 20,
     }
   });
 
-  const resultFinish: Result = {
+  //Used to try fuinal result view
+  /* const resultFinish: Result = {
     results: [
       {
         category: "",
@@ -48,13 +49,13 @@ marginBottom: 20,
       }
     ],
     response_code: 1
-  }
+  } */
 
 interface HomeProps extends WithStyles<typeof styles> {}
 
 const HomeComponent = (props: HomeProps) => {
     const [begin, setBegin] = React.useState(false);
-    const [result, setResult] = React.useState(resultFinish);
+    const [result, setResult] = React.useState(null);
 
     const finishGame = (result: Result) => {
         setBegin(false);
