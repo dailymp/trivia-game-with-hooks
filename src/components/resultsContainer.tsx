@@ -67,6 +67,7 @@ export class ResultsInner extends React.Component<Props> {
         );
     }
 
+<<<<<<< HEAD
     private checkIfAnswerIsCorrect = (question: Questions): boolean => {
         return question.user_answer.toString().toLowerCase() === question.correct_answer.toLowerCase();
     }
@@ -75,11 +76,18 @@ export class ResultsInner extends React.Component<Props> {
         const { classes } = this.props;
         return <Icon className={clsx(classes.iconCorrect, 'fas fa-plus')} fontSize="small" />
     }
+=======
+const checkIfAnswerIsCorrect = (question: Questions): boolean => {
+    return question.correct_answer.toLocaleLowerCase() === 
+    question.user_answer.toString();
+}
+>>>>>>> Fixing minor things
 
     private renderErrorIcon = () => {
         const { classes } = this.props;
         return <Icon className={clsx(classes.icon, classes.iconError, 'fas fa-minus')} fontSize="small" />
     }
+<<<<<<< HEAD
 
     private getScore = () => {
         const { result } = this.props;
@@ -126,3 +134,31 @@ export class ResultsInner extends React.Component<Props> {
 
 
 export const ResultsContainer = withStyles(styles)(ResultsInner)
+=======
+    return (
+        <React.Fragment>
+            <div className={classes.Score}>
+            <h3>You scored </h3>
+            <h3>{` ${getScore()}/${result.results.length} `}</h3>
+            </div>
+            {
+                result.results.map(question => {
+                    return (
+                        <div className={classes.Result}>
+                            <span style={{"padding": 10}}>
+                            {checkIfAnswerIsCorrect(question) ?
+                                 <DoneIcon/> : <ClearIcon/>}</span>
+                            <p>{question.question}</p>
+                        </div>
+                    )
+                })
+            }
+            {<div className={classes.PlayAgain}>
+            <button onClick={() => resetGame()}>Play Again?</button>
+            </div>}
+        </React.Fragment>
+    );
+};
+
+export const ResultsContainer = withStyles(styles)(ResultsContainerComponent);
+>>>>>>> Fixing minor things

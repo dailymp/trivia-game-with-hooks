@@ -1,4 +1,3 @@
-import "jest";
 import * as React from "react";
 import {shallow, mount} from "enzyme";
 import { ResultsContainer } from "../src/components/resultsContainer";
