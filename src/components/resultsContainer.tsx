@@ -3,7 +3,8 @@ import { Result, Questions } from "../model/questionsResults";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core";
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
-const centeredElement = {"display": "flex", "align-items": "center", "justify-content": "center", "flex-direction": "column"};
+const centeredElement = {"display": "flex", "align-items": "center", 
+"justify-content": "center", "flex-direction": "column"};
 
 const styles = theme =>
   createStyles({
@@ -18,7 +19,8 @@ interface resultsContainerProps extends WithStyles<typeof styles> {
 }
 
 const checkIfAnswerIsCorrect = (question: Questions): boolean => {
-    return question.correct_answer.toLocaleLowerCase() === question.user_answer.toString();
+    return question.correct_answer.toLocaleLowerCase() === 
+    question.user_answer.toString();
 }
 
 const ResultsContainerComponent = (props: resultsContainerProps) => {
@@ -36,7 +38,9 @@ const ResultsContainerComponent = (props: resultsContainerProps) => {
                 result.results.map(question => {
                     return (
                         <div className={classes.Result}>
-                            <span style={{"padding": 10}}>{checkIfAnswerIsCorrect(question) ? <DoneIcon/> : <ClearIcon/>}</span>
+                            <span style={{"padding": 10}}>
+                            {checkIfAnswerIsCorrect(question) ?
+                                 <DoneIcon/> : <ClearIcon/>}</span>
                             <p>{question.question}</p>
                         </div>
                     )

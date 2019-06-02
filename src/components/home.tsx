@@ -97,7 +97,8 @@ const HomeComponent = (props: HomeProps) => {
     const { classes } = props;
     return (
         <Card className={classes.card}>
-          {!result && <CardHeader className= {classes.cardHeader}  title="Welcome to the trivia challenge" />}
+          {!result && <CardHeader className= {classes.cardHeader} 
+           title="Welcome to the trivia challenge" />}
           <CardContent>
           { result ? renderFinalResult() : renderQuestions() }
           </CardContent>
