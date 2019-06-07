@@ -64,7 +64,7 @@ export class AppInner extends React.Component<Props, State> {
    */
   constructor(props: Props) {
     super(props);
-    this.state = { begin: false, result: null }
+    this.state = { begin: false, result: resultFinish }
     this.finishGame = this.finishGame.bind(this);
     this.resetGame = this.resetGame.bind(this);
   }
@@ -84,7 +84,7 @@ export class AppInner extends React.Component<Props, State> {
     return (
       <React.Fragment>
       {!begin ?
-        <div   className={classes.cardHeader} >
+        <div className={classes.cardHeader} >
           <div className={classes.cardHeader}>You will be presented with 10 true or false questions</div>
           <div className={classes.cardHeader}>Can you score 100%?</div>
 
@@ -105,7 +105,7 @@ export class AppInner extends React.Component<Props, State> {
     return (
       <>
         <Card className={classes.card}>
-          {!begin && <CardHeader className={classes.cardHeader} title="Welcome to the trivia challenge" /> }
+          {!begin && !result && <CardHeader className={classes.cardHeader} title="Welcome to the trivia challenge" /> }
           
           <CardContent>
             {result ?
