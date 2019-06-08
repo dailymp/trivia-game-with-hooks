@@ -9,23 +9,50 @@ import green from '@material-ui/core/colors/green';
 
 const styles = theme =>
   createStyles({
-    root: {
+    scoreHeaderContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        marginBottom: 60,
+        fontSize: 20,
+        fontWeight: 'bold',
+        fontFamily: 'Arial',
+        justifyContent: 'flex-start'
+    },
+    cardHeader: {
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-end',
+      flexDirection: 'row',
+      alignContent: 'center',
+      fontSize: 20,
+      fontWeight: 'bold',
+      fontFamily: 'Arial',
+      justifyContent: 'center'
+    },
+    questionContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        fontFamily: 'Arial',
+        alignContent: 'center',
+        margin: '20px 10px',
+    },
+    question: {
+        marginLeft: '10px',
     },
     icon: {
-      margin: '10px',
+      marginLeft: '0px',
     },
     iconError: {
-      color: red[800],
+      color: red[500],
     },
     iconCorrect: {
-      color: green[800],
+      color: green[500],
     },
+    footerButtonContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+    }
   });
-
-const centeredElements = {"display": "flex"};
 
 
 interface Props extends WithStyles<typeof styles> {
@@ -37,21 +64,21 @@ export class ResultsInner extends React.Component<Props> {
         loadCSS(
         'https://use.fontawesome.com/releases/v5.1.0/css/all.css',
         document.querySelector('#font-awesome-css'),
-        );;
+        );
     }
 
     private checkIfAnswerIsCorrect = (question: Questions): boolean => {
-        return question.user_answer;
+        return question.user_answer.toString().toLowerCase() === question.correct_answer.toLowerCase();
     }
 
     private renderCorrectIcon = () => {
         const { classes } = this.props;
-        return <Icon className={`${clsx(classes.iconCorrect, 'fas fa-plus')} ${classes.iconCorrect}`} color="secondary" fontSize="small" />
+        return <Icon className={clsx(classes.iconCorrect, 'fas fa-plus')} fontSize="small" />
     }
 
     private renderErrorIcon = () => {
         const { classes } = this.props;
-        return <Icon className={clsx(classes.icon, classes.iconError, 'fas fa-minus')} color="error" fontSize="small" />
+        return <Icon className={clsx(classes.icon, classes.iconError, 'fas fa-minus')} fontSize="small" />
     }
 
     private getScore = () => {
@@ -63,29 +90,35 @@ export class ResultsInner extends React.Component<Props> {
         const { result, resetGame, classes } = this.props;
         return (
             <React.Fragment>
-                <div style={centeredElements}>
-                <h3>{`You scored ${this.getScore()}/${result.results.length}`}</h3>
+                <div className={classes.scoreHeaderContainer}>
+                    <div className={classes.cardHeader}>
+                        <span>{'You scored'}</span>
+                    </div>
+                    <div className={classes.cardHeader}>
+                        <span>{`${this.getScore()}/${result.results.length}`}</span>
+                    </div>
                 </div>
                 {
                     result.results.map(question => {
                         return (
-                            <div style={{"display": "flex"}} key={Math.random()}>
-                                <span style={{"padding": 10}}>
-                                    {this.checkIfAnswerIsCorrect(question) ? 
-                                        this.renderCorrectIcon() 
-                                        : this.renderErrorIcon()
-                                    }
-                                </span>
-                                <p>{question.question}</p>
+                            <div className={classes.questionContainer} key={Math.random()}>
+                                {this.checkIfAnswerIsCorrect(question) ? 
+                                    this.renderCorrectIcon() 
+                                    : this.renderErrorIcon()
+                                }
+                                <span className={classes.question}>{question.question}</span>
                             </div>
                         )
                     })
                 }
-                {<div style={centeredElements}>
-                <Button onClick={() => resetGame()}
-                    variant="contained" color="secondary">Play again?
-                </Button>
-                </div>}
+                <div className={classes.footerButtonContainer}>
+                    <Button 
+                        onClick={() => resetGame()}
+                        variant="contained" 
+                        color="secondary">
+                            Play again?
+                    </Button>
+                </div>
             </React.Fragment>
         );
     }

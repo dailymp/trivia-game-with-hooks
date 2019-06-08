@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Questions } from '../model/questionsResults';
-import { WithStyles, withStyles, createStyles, RadioGroup, FormControlLabel, Radio } from "@material-ui/core";
+import { WithStyles, withStyles, createStyles, RadioGroup, FormControlLabel, Radio, colors } from "@material-ui/core";
 
 // styles is an object created with createStyles.
 const styles = theme =>
@@ -29,20 +29,56 @@ const styles = theme =>
     RadioContainer: {
       display: 'flex', 
       justifyContent: 'center'
-    }
+    },
+    questionWrong: {
+      '& span': {
+        color: colors.red[500],
+      }
+    },
+    questionRight: {
+      '& span': {
+        color: colors.green[500],
+      }
+    },
+    question: {}
   });
 
+const booleanValues = {true: 'True', false: 'False'}
 
 interface Props extends WithStyles<typeof styles> { question: Questions }
+
+interface State { checked: string }
 
 /*
  * I wanted this component to be a stateless/presentational component with typescript and material-UI. 
  * However, after a while trying to get it working, I decided to make it a class component instead
  */
-export class QuestionBoxInner extends React.Component<Props> {
+export class QuestionBoxInner extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {checked: ''};
+  }
+
+  private handleChange = (event: any) => {
+    this.setState({checked: event.target.value})
+  }
+
+  private getStyleClass = (radioValue: string) => {
+    const { checked } = this.state;
+    const { classes , question} = this.props;
+
+    if (checked === radioValue) {
+      if (checked === question.correct_answer)
+        return classes.questionRight;
+      else if (checked !== question.correct_answer)
+        return classes.questionWrong;
+    } else 
+      return classes.question;
+  }
 
   public render() {
     const { classes, question } = this.props;
+    const { checked } = this.state;
 
     return (
       <div className={classes.mainQuestionContainer}>
@@ -57,18 +93,30 @@ export class QuestionBoxInner extends React.Component<Props> {
           <div className={classes.RadioContainer}>
             {
               question.type === 'boolean' &&
-                <RadioGroup>
-                  <FormControlLabel value="true" control={<Radio />} label="True" />
-                  <FormControlLabel value="false" control={<Radio />} label="False" />
+                <RadioGroup onChange={this.handleChange}>
+                  <FormControlLabel 
+                    value={booleanValues.true} 
+                    control={
+                      <Radio 
+                        className={`MuiButton ${this.getStyleClass(booleanValues.true)}`}
+                        checked={checked === booleanValues.true} />
+                    } 
+                    label={booleanValues.true} />
+                  <FormControlLabel 
+                    value={booleanValues.false} 
+                    control={
+                      <Radio 
+                        className={`MuiButton ${this.getStyleClass(booleanValues.false)}`}
+                        checked={checked === booleanValues.false} />
+                    } 
+                    label={booleanValues.false} />
                 </RadioGroup>
             }
           </div>
         </div>
-
       </div>
     )
   }
 }
-
 
 export const QuestionBox = withStyles(styles)(QuestionBoxInner);
