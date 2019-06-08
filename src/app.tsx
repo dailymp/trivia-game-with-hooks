@@ -64,7 +64,7 @@ export class AppInner extends React.Component<Props, State> {
    */
   constructor(props: Props) {
     super(props);
-    this.state = { begin: false, result: resultFinish }
+    this.state = { begin: false, result: null }
     this.finishGame = this.finishGame.bind(this);
     this.resetGame = this.resetGame.bind(this);
   }
