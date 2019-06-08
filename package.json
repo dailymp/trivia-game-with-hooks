@@ -35,9 +35,12 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
+    "@material-ui/styles": "^4.0.2",
     "axios": "^0.18.0",
+    "clsx": "^1.0.4",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
+    "fg-loadcss": "^2.1.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-router-dom": "^5.0.0",
