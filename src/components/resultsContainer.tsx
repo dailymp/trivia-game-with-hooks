@@ -59,35 +59,35 @@ interface Props extends WithStyles<typeof styles> {
     result: Result;
     resetGame: () => void;
 }
-export class ResultsInner extends React.Component<Props> {
-    public componentDidMount = () => {
+
+export const ResultsInner = (props: Props) => {
+    React.useEffect(() => {
         loadCSS(
         'https://use.fontawesome.com/releases/v5.1.0/css/all.css',
         document.querySelector('#font-awesome-css'),
         );
-    }
+    }, []);
 
-    private checkIfAnswerIsCorrect = (question: Questions): boolean => {
+    const  checkIfAnswerIsCorrect = (question: Questions): boolean => {
         return question.user_answer.toString().toLowerCase() === question.correct_answer.toLowerCase();
     }
 
-    private renderCorrectIcon = () => {
-        const { classes } = this.props;
+    const renderCorrectIcon = () => {
+        const { classes } = props;
         return <Icon className={clsx(classes.iconCorrect, 'fas fa-plus')} fontSize="small" />
     }
 
-    private renderErrorIcon = () => {
-        const { classes } = this.props;
+    const renderErrorIcon = () => {
+        const { classes } = props;
         return <Icon className={clsx(classes.icon, classes.iconError, 'fas fa-minus')} fontSize="small" />
     }
 
-    private getScore = () => {
-        const { result } = this.props;
-        return result.results.reduce((i,c,f) => this.checkIfAnswerIsCorrect(c) ? f++ : f, 0);
+    const getScore = () => {
+        const { result } = props;
+        return result.results.reduce((i,c,f) => checkIfAnswerIsCorrect(c) ? f++ : f, 0);
     }
     
-    public render() {
-        const { result, resetGame, classes } = this.props;
+        const { result, resetGame, classes } = props;
         return (
             <React.Fragment>
                 <div className={classes.scoreHeaderContainer}>
@@ -95,16 +95,16 @@ export class ResultsInner extends React.Component<Props> {
                         <span>{'You scored'}</span>
                     </div>
                     <div className={classes.cardHeader}>
-                        <span>{`${this.getScore()}/${result.results.length}`}</span>
+                        <span>{`${getScore()}/${result.results.length}`}</span>
                     </div>
                 </div>
                 {
                     result.results.map(question => {
                         return (
                             <div className={classes.questionContainer} key={Math.random()}>
-                                {this.checkIfAnswerIsCorrect(question) ? 
-                                    this.renderCorrectIcon() 
-                                    : this.renderErrorIcon()
+                                {checkIfAnswerIsCorrect(question) ? 
+                                    renderCorrectIcon() 
+                                    : renderErrorIcon()
                                 }
                                 <span className={classes.question}>{question.question}</span>
                             </div>
@@ -121,7 +121,6 @@ export class ResultsInner extends React.Component<Props> {
                 </div>
             </React.Fragment>
         );
-    }
 }
 
 
