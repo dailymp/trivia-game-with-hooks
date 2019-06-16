@@ -27,11 +27,15 @@ export const QuestionsContainerComponent = (props: QuestionsContainerProps) => {
 
   const addAnswer = (index: number, answer: boolean) => {
     //Update answer questions using Immutable way
-    const questionsUpdated = {
+
+    const currentQuestion = questions[index];
+    currentQuestion.user_answer = answer;
+
+    const questionsUpdated = [
       ...questions.slice(0, index), // questions before current update
-      ...questions[index], user_answer: answer,
+      currentQuestion,
       ...questions.slice(index + 1) // questions after current update
-    }
+    ]
     setQuestions(questionsUpdated);
   }
 
@@ -47,6 +51,9 @@ export const QuestionsContainerComponent = (props: QuestionsContainerProps) => {
   return (
     // As a first approach, a new component is created in order to manage the state in the component without having to use Hooks
     // The final version would be implemented using hooks instead
-    <QuestionsItem questions = {questions} />
+    <QuestionsItem 
+      questions={questions}
+      addAnswer={addAnswer}
+      finishGame={finishGame}/>
   );
 };

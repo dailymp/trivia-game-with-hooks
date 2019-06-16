@@ -84,7 +84,7 @@ export const ResultsInner = (props: Props) => {
 
     const getScore = () => {
         const { result } = props;
-        return result.results.reduce((i,c,f) => checkIfAnswerIsCorrect(c) ? f++ : f, 0);
+        return result.results.filter(question => checkIfAnswerIsCorrect(question)).length;
     }
     
         const { result, resetGame, classes } = props;

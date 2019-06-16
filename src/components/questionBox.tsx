@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Questions } from '../model/questionsResults';
 import { WithStyles, withStyles, createStyles, RadioGroup, FormControlLabel, Radio, colors } from "@material-ui/core";
+import { thisExpression } from '@babel/types';
 
 // styles is an object created with createStyles.
 const styles = theme =>
@@ -45,7 +46,10 @@ const styles = theme =>
 
 const booleanValues = {true: 'True', false: 'False'}
 
-interface Props extends WithStyles<typeof styles> { question: Questions }
+interface Props extends WithStyles<typeof styles> {
+  question: Questions;
+  addAnswer: (answer: boolean) => void;
+}
 
 interface State { checked: string }
 
@@ -59,7 +63,16 @@ export class QuestionBoxInner extends React.Component<Props, State> {
     this.state = {checked: ''};
   }
 
+  componentWillReceiveProps = (nextProps: Props) => {    
+    if (this.props.question !== nextProps.question) {
+      this.setState({checked: ''})
+    }
+  }
+
   private handleChange = (event: any) => {
+    const {addAnswer, question} = this.props;
+
+    addAnswer(event.target.value === booleanValues.true)
     this.setState({checked: event.target.value})
   }
 
