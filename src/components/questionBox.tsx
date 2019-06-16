@@ -51,35 +51,25 @@ interface Props extends WithStyles<typeof styles> {
   addAnswer: (answer: boolean) => void;
 }
 
-interface State { checked: string }
-
 /*
  * I wanted this component to be a stateless/presentational component with typescript and material-UI. 
  * However, after a while trying to get it working, I decided to make it a class component instead
  */
-export class QuestionBoxInner extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {checked: ''};
-  }
+export const QuestionBoxInner = (props:Props) => {
 
-  componentWillReceiveProps = (nextProps: Props) => {    
-    if (this.props.question !== nextProps.question) {
-      this.setState({checked: ''})
-    }
-  }
+  const {classes, addAnswer, question} = props;
+  const [checked, setChecked] = React.useState('');
 
-  private handleChange = (event: any) => {
-    const {addAnswer, question} = this.props;
+  React.useEffect(() => {
+    setChecked('');
+  }, [props.question])
 
+  const handleChange = (event: any) => {
     addAnswer(event.target.value === booleanValues.true)
-    this.setState({checked: event.target.value})
+    setChecked(event.target.value);
   }
 
-  private getStyleClass = (radioValue: string) => {
-    const { checked } = this.state;
-    const { classes , question} = this.props;
-
+  const getStyleClass = (radioValue: string) => {
     if (checked === radioValue) {
       if (checked === question.correct_answer)
         return classes.questionRight;
@@ -89,47 +79,42 @@ export class QuestionBoxInner extends React.Component<Props, State> {
       return classes.question;
   }
 
-  public render() {
-    const { classes, question } = this.props;
-    const { checked } = this.state;
-
-    return (
-      <div className={classes.mainQuestionContainer}>
-        <div className={classes.questionCategory}>
-          <h2>{question.category}</h2>
+  return (
+    <div className={classes.mainQuestionContainer}>
+      <div className={classes.questionCategory}>
+        <h2>{question.category}</h2>
+      </div>
+      
+      <div className={classes.questionContainer}>
+        <div className={classes.questionText}>
+          <p>{question.question}</p>
         </div>
-        
-        <div className={classes.questionContainer}>
-          <div className={classes.questionText}>
-            <p>{question.question}</p>
-          </div>
-          <div className={classes.RadioContainer}>
-            {
-              question.type === 'boolean' &&
-                <RadioGroup onChange={this.handleChange}>
-                  <FormControlLabel 
-                    value={booleanValues.true} 
-                    control={
-                      <Radio 
-                        className={`MuiButton ${this.getStyleClass(booleanValues.true)}`}
-                        checked={checked === booleanValues.true} />
-                    } 
-                    label={booleanValues.true} />
-                  <FormControlLabel 
-                    value={booleanValues.false} 
-                    control={
-                      <Radio 
-                        className={`MuiButton ${this.getStyleClass(booleanValues.false)}`}
-                        checked={checked === booleanValues.false} />
-                    } 
-                    label={booleanValues.false} />
-                </RadioGroup>
-            }
-          </div>
+        <div className={classes.RadioContainer}>
+          {
+            question.type === 'boolean' &&
+              <RadioGroup onChange={handleChange}>
+                <FormControlLabel 
+                  value={booleanValues.true} 
+                  control={
+                    <Radio 
+                      className={`MuiButton ${getStyleClass(booleanValues.true)}`}
+                      checked={checked === booleanValues.true} />
+                  } 
+                  label={booleanValues.true} />
+                <FormControlLabel 
+                  value={booleanValues.false} 
+                  control={
+                    <Radio 
+                      className={`MuiButton ${getStyleClass(booleanValues.false)}`}
+                      checked={checked === booleanValues.false} />
+                  } 
+                  label={booleanValues.false} />
+              </RadioGroup>
+          }
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export const QuestionBox = withStyles(styles)(QuestionBoxInner);
