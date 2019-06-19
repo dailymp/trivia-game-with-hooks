@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { QuestionsContainerComponent } from './components/questionsContainer';
 import { Card, CardHeader, CardContent, WithStyles, createStyles, withStyles, Button, ButtonBase, StepButton } from "@material-ui/core";
+import { ResultsContainer } from './components/resultsContainer';
+import { Result } from './model/questionsResults';
 
 
 const styles = theme =>
@@ -18,51 +20,68 @@ const styles = theme =>
       marginBottom: 60,
       fontSize: 20,
       fontWeight: 'bold',
-      fontFamily: 'Arial'      
+      fontFamily: 'Arial'
     },
     button: {
-marginBottom: 20,
+      marginBottom: 20,
     }
   });
-interface State {
-  begin: boolean;
-}
+
 interface Props extends WithStyles<typeof styles> { }
-export class AppInner extends React.Component<Props, State> {
 
-  /**
-   *
-   */
-  constructor(props: Props) {
-    super(props);
-this.state = { begin: false }
+export const AppInner = (props:Props) => {
+  const {classes} = props;
+  const [begin, setBegin] = React.useState(false);
+  const [result, setResult] = React.useState(null);
+
+
+  const finishGame = (result: Result) => {
+    setResult(result);
+    setBegin(false);
   }
 
-  public render() {
-    const { classes } = this.props;
+  const resetGame = () => {
+    setResult(null);
+    setBegin(true);
+  }
 
+  const renderHome = () => {    
     return (
-      <>
-        <Card className={classes.card}>
-          <CardHeader className= {classes.cardHeader}  title="Welcome to the trivia challenge" />
-          <CardContent>
-            <div   className={classes.cardHeader} >
-              <div className={classes.cardHeader}>You will be presented with 10 true or false questions</div>
-              <div className={classes.cardHeader}>Can you score 100%?</div>
+      <React.Fragment>
+      {!begin ?
+        <div className={classes.cardHeader} >
+          <div className={classes.cardHeader}>You will be presented with 10 true or false questions</div>
+          <div className={classes.cardHeader}>Can you score 100%?</div>
 
-              <div  className={classes.card}>
-              <Button onClick= { () => this.setState({ begin: true})} 
-               variant="contained" color="secondary" className={classes.button}>Begin</Button>
-              </div>               
-              
-            </div>
-
-            { this.state.begin && <QuestionsContainerComponent /> }
-          </CardContent>
-        </Card>
-      </>
-    );
+          <div  className={classes.card}>
+          <Button onClick= { () => setBegin(true)}
+            variant="contained" color="secondary" className={classes.button}>Begin</Button>
+          </div>
+        </div>
+      : <QuestionsContainerComponent setFinalResult={finishGame}/> }
+      </React.Fragment>
+    )
   }
+
+  return (
+    <>
+      <Card className={classes.card}>
+        {!begin && !result && <CardHeader className={classes.cardHeader} title="Welcome to the trivia challenge" /> }
+        
+        <CardContent>
+          {result ?
+            <ResultsContainer
+              result={result}
+              resetGame={resetGame}
+            />
+            :
+            renderHome()
+          }
+
+        </CardContent>
+      </Card>
+    </>
+  );
 }
 
 

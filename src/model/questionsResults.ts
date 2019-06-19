@@ -9,6 +9,7 @@ export interface Questions {
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
+  user_answer: boolean;
 }
 export const createEmptyQuestion = (): Questions => ({
   category: "",
@@ -16,5 +17,6 @@ export const createEmptyQuestion = (): Questions => ({
   difficulty: "",
   question: "",
   correct_answer: "",
-  incorrect_answers: [""]
+  incorrect_answers: [""],
+  user_answer: null
 });
